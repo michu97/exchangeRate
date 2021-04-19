@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import demo.service.ContentNotFoundException;
 import demo.service.HttpRequestService;
 
 public class NbpResponseReciver implements ResponseReciver {
@@ -28,7 +29,13 @@ public class NbpResponseReciver implements ResponseReciver {
 	}
 	
 	private BigDecimal deserializeJson() {
-		JSONObject response = service.getResponse(generateURL());
+		JSONObject response;
+		try {
+			response = service.getResponse(generateURL());
+		} catch (ContentNotFoundException e) {
+			response = service.getResponse(generateExcpetion());
+		}
+		
 		JSONArray rates = response.getJSONArray("rates");
 		JSONObject rate = rates.getJSONObject(0);
 		return rate.getBigDecimal("mid");
@@ -41,7 +48,10 @@ public class NbpResponseReciver implements ResponseReciver {
 		if (date.isBefore(LocalDate.of(2002, 1, 2))) {
 			return API_URL + code.name() + "/" + LocalDate.of(2002, 1, 2).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		}
-		System.out.println(API_URL + code.name() + "/" + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
 		return API_URL + code.name() + "/" + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+	}
+	
+	private String generateExcpetion() {
+		return API_URL + code.name() + "/" + date.minusDays(93).format(DateTimeFormatter.ISO_LOCAL_DATE) + "/" + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 	}
 }
