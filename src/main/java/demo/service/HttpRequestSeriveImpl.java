@@ -6,18 +6,28 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONObject;
 
 public class HttpRequestSeriveImpl implements HttpRequestService {
-
+	private static final Logger LOGGER = Logger.getLogger(HttpRequestSeriveImpl.class.getName());
+	
 	@Override
 	public JSONObject getResponse(String url) {
-		return new JSONObject(reciveResponse(url));
+		String respone = reciveResponse(url);
+		if (respone == null) {
+			return new JSONObject();
+		}
+		return new JSONObject(respone);
 	}
 
 	private String reciveResponse(String url) {
 		HttpURLConnection connection = checkoutConnection(url);
+		if (connection == null) {
+			return null;
+		}
 		BufferedReader in = null;
 		try {
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -28,7 +38,7 @@ public class HttpRequestSeriveImpl implements HttpRequestService {
 			}
 			return content.toString();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, "Cannot take body from response: ", e);
 			return null;
 		} finally {
 			if (in != null) {
@@ -38,7 +48,9 @@ public class HttpRequestSeriveImpl implements HttpRequestService {
 					e.printStackTrace();
 				}
 			}
-			connection.disconnect();
+			if (connection != null) {
+					connection.disconnect();
+			}
 		}
 	}
 	
@@ -47,11 +59,12 @@ public class HttpRequestSeriveImpl implements HttpRequestService {
 			HttpURLConnection connection = getConnection(url);
 			int responseCode = connection.getResponseCode();
 			if (responseCode == 404)
-				throw new ContentNotFoundException("Data not found");
+				throw new ContentNotFoundException("Response code: " + 
+						responseCode + "Data not found");
 			return connection;
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Cannot connecting to external api", e);
+			LOGGER.log(Level.WARNING, "No internet connection: ", e);
+			return null;
 		}
 		
 	}
@@ -68,7 +81,7 @@ public class HttpRequestSeriveImpl implements HttpRequestService {
 		try {
 			return new URL(url);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.WARNING, "Cannot parse url: ", e);
 			return null;
 		}
 	}

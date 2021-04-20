@@ -11,15 +11,16 @@ public class FakeHttpRequestImpl implements HttpRequestService {
 		this.isInternetConnection = isInternetConnection;
 	}
 
-
-
 	@Override
 	public JSONObject getResponse(String url) {
 		if (!isInternetConnection)
-			throw new RuntimeException("Cannot connecting to external api");
+			return new JSONObject();
 		return new JSONObject(content);
 	}
 
-	
-	
+
+	public void setInternetConnection(boolean isInternetConnection) {
+		this.isInternetConnection = isInternetConnection;
+	}
+
 }

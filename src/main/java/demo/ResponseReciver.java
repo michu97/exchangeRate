@@ -1,7 +1,8 @@
 package demo;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public interface ResponseReciver {
-	BigDecimal getExchangeRate();
+	Optional<BigDecimal> getExchangeRate();
 }

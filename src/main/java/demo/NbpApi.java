@@ -2,6 +2,7 @@ package demo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import demo.service.HttpRequestSeriveImpl;
 import demo.service.HttpRequestService;
@@ -14,14 +15,18 @@ public class NbpApi implements ExchangeApi {
 	}
 
 	@Override
-	public BigDecimal getAmountFromPLN(LocalDate date, BigDecimal amount, 
+	public Optional<BigDecimal> getAmountFromPLN(LocalDate date, BigDecimal amount, 
 			CurrencyCode code) {
 		ResponseReciver reciver = new NbpResponseReciver(date, code, service);
-		return reciver.getExchangeRate();
+		Optional<BigDecimal> rate = reciver.getExchangeRate();
+		if (rate.isEmpty()) {
+			return reciver.getExchangeRate();
+		};
+		return Optional.ofNullable(rate.get().multiply(amount));
 	}
 
 	@Override
-	public BigDecimal getAmountFromPLN(BigDecimal amount, CurrencyCode code) {
+	public Optional<BigDecimal> getAmountFromPLN(BigDecimal amount, CurrencyCode code) {
 		return getAmountFromPLN(LocalDate.now(), amount, code);
 	}
 
