@@ -22,7 +22,8 @@ public class NbpResponseReciverTest {
 	@Test
 	public void shouldReturnEmptyOptionalWhenIsNoInternet() {
 		//given
-		ResponseReciver reciver = new NbpResponseReciver(LocalDate.now(), CurrencyCode.USD, service);
+		ResponseReciver reciver = new NbpResponseReciver(LocalDate.now(),
+				CurrencyCode.USD, service);
 		service.setInternetConnection(false);
 		
 		//when
@@ -35,7 +36,8 @@ public class NbpResponseReciverTest {
 	@Test
 	public void shouldReturnUsdRateFor2021_04_19() {
 		//given
-		ResponseReciver reciver = new NbpResponseReciver(LocalDate.of(2021, 4, 19), CurrencyCode.USD, service);
+		ResponseReciver reciver = new NbpResponseReciver(LocalDate.of(2021, 4, 19),
+				CurrencyCode.USD, service);
 		BigDecimal excepted = new BigDecimal("3.7816");
 		
 		//when

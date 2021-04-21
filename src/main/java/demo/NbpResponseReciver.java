@@ -36,21 +36,21 @@ public class NbpResponseReciver implements ResponseReciver {
 	}
 	
 	private BigDecimal deserializeJson() {
-		JSONObject response;
-		Boolean isSecondCheck = false;
+		JSONObject response = null;
 		try {
 			response = service.getResponse(generateURL());
 		} catch (ContentNotFoundException e) {
-				if (isSecondCheck) {
-					LOGGER.log(Level.WARNING, "Not found target exchange rate: ", e);
-					return null;
-				}
-				response = service.getResponse(generateExcpetion());
-				isSecondCheck = true;
+			for (int i = 0; i < 10; i++) {
+				response = seckondCheck();
+				if (!response.isEmpty())
+					break;
+			}
+			if (response.isEmpty()) {
+				LOGGER.log(Level.WARNING, "Data not found: ", e);
+				return null;
+			}
 		}
-		if (response.isEmpty()) {
-			return null;
-		}
+		
 		try {
 			JSONArray rates = response.getJSONArray("rates");
 			JSONObject rate = rates.getJSONObject(rates.length() - 1);
@@ -61,23 +61,28 @@ public class NbpResponseReciver implements ResponseReciver {
 		}
 	}
 	
+	private JSONObject seckondCheck() {
+		try {
+			return service.getResponse(generateExcpetion());
+		} catch (ContentNotFoundException e) {
+			return new JSONObject();
+		}
+	}
+
 	private String generateURL() {
 		if (date.isAfter(LocalDate.now())) {
 			date = LocalDate.now();
 			return API_URL + code.name() + "/" +
 					LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
 		}
-		if (date.isBefore(LocalDate.of(2002, 1, 2))) {
-			return API_URL + code.name() + "/" +
-					LocalDate.of(2002, 1, 2).format(DateTimeFormatter.ISO_LOCAL_DATE);
-		}
+
 		return API_URL + code.name() + "/" + 
 					date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 	}
 	
 	private String generateExcpetion() {
+		date = date.minusDays(1);
 		return API_URL + code.name() + "/" + 
-				date.minusDays(93).format(DateTimeFormatter.ISO_LOCAL_DATE) +
-				"/" + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+				date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 	}
 }

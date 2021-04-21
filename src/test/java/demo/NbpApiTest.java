@@ -9,8 +9,6 @@ import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 
-
-
 public class NbpApiTest {
 private NbpApi api;
 	
@@ -20,16 +18,16 @@ private NbpApi api;
 	}
 	
 	@Test
-	public void shouldReturnRateOf2002_01_02WhenDateIsBefore() {
+	public void shouldReturnRateOfEmptyOptionalWhenDateIsBefore2002_01_02() {
 		//given
-		BigDecimal expected = new BigDecimal("39.4800");
+		Optional<BigDecimal> expected = Optional.empty();
 		
 		//when
 		Optional<BigDecimal> actual = 
 				api.getAmountFromPLN(LocalDate.of(2001, 1, 1), new BigDecimal(10), CurrencyCode.USD);
 		
 		//then
-		assertThat(actual.get()).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected);
 	}
 	
 	@Test

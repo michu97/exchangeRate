@@ -60,7 +60,7 @@ public class HttpRequestSeriveImpl implements HttpRequestService {
 			int responseCode = connection.getResponseCode();
 			if (responseCode == 404)
 				throw new ContentNotFoundException("Response code: " + 
-						responseCode + "Data not found");
+						responseCode + " Data not found");
 			return connection;
 		} catch (IOException e) {
 			LOGGER.log(Level.WARNING, "No internet connection: ", e);
