@@ -63,4 +63,34 @@ private NbpApi api;
 		//then
 		assertThat(actual.get()).isEqualTo(expected);
 	}
+	
+	@Test
+	public void shouldReturnCorrectRateForSeveralCurrencyFor2021_04_15() {
+		//given
+		LocalDate date = LocalDate.of(2021, 4, 15);
+		BigDecimal ammount = new BigDecimal("350");
+		
+		BigDecimal expectedGBP = new BigDecimal("5.2376").multiply(ammount);
+		BigDecimal expectedEUR = new BigDecimal("4.5546").multiply(ammount);
+		BigDecimal expectedUSD = new BigDecimal("3.8014").multiply(ammount);
+		BigDecimal expectedCZK = new BigDecimal("0.1755").multiply(ammount);
+		BigDecimal expectedPHP = new BigDecimal("0.0785").multiply(ammount);
+		BigDecimal expectedXDR = new BigDecimal("5.4360").multiply(ammount);
+		
+		//when
+		Optional<BigDecimal> actualGBP = api.getAmountFromPLN(date, ammount, CurrencyCode.GBP);
+		Optional<BigDecimal> actualEUR = api.getAmountFromPLN(date, ammount, CurrencyCode.EUR);
+		Optional<BigDecimal> actualUSD = api.getAmountFromPLN(date, ammount, CurrencyCode.USD);
+		Optional<BigDecimal> actualCZK = api.getAmountFromPLN(date, ammount, CurrencyCode.CZK);
+		Optional<BigDecimal> actualPHP = api.getAmountFromPLN(date, ammount, CurrencyCode.PHP);
+		Optional<BigDecimal> actualXDR = api.getAmountFromPLN(date, ammount, CurrencyCode.XDR);
+		
+		//then
+		assertThat(actualGBP.get()).isEqualTo(expectedGBP);
+		assertThat(actualEUR.get()).isEqualTo(expectedEUR);
+		assertThat(actualUSD.get()).isEqualTo(expectedUSD);
+		assertThat(actualCZK.get()).isEqualTo(expectedCZK);
+		assertThat(actualPHP.get()).isEqualTo(expectedPHP);
+		assertThat(actualXDR.get()).isEqualTo(expectedXDR);
+	}
 }
