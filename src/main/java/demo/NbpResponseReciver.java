@@ -51,7 +51,6 @@ public class NbpResponseReciver implements ResponseReciver {
 				return null;
 			}
 		}
-		
 		return deserializer.getRate(response);
 	}
 	
