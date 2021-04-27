@@ -5,22 +5,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class HttpRequestSeriveImpl implements HttpRequestService {
 	
 	@Override
-	public JSONObject getResponse(String url) {
-		String respone;
+	public String getResponse(String url) {
 		try {
-			respone = reciveResponse(url);
-			return new JSONObject(respone);
-		} catch (IOException | JSONException e) {
-			return new JSONObject();
+			return reciveResponse(url);
+		} catch (IOException e) {
+			return "";
 		}
 	}
 
@@ -49,10 +42,6 @@ public class HttpRequestSeriveImpl implements HttpRequestService {
 	
 	private HttpURLConnection checkoutConnection(String url) throws IOException {
 			HttpURLConnection connection = getConnection(url);
-			int responseCode = connection.getResponseCode();
-			if (responseCode == 404)
-				throw new ContentNotFoundException("Response code: " + 
-						responseCode + " Data not found");
 			return connection;
 	}
 	
@@ -60,7 +49,6 @@ public class HttpRequestSeriveImpl implements HttpRequestService {
 		URL urlConnection = new URL(url);
 		HttpURLConnection connection = (HttpURLConnection) urlConnection.openConnection();
 		connection.setRequestMethod("GET");
-		connection.setRequestProperty("Accept", "application/json");
 		return connection;
 	}
 }
