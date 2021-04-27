@@ -9,13 +9,11 @@ import demo.CurrencyCode;
 class NbpRepository implements ExchangeRateRepository {
 	private final ExchangeDataProvider provider;
 	private final ExchangeDataParser parser;
-	private final PathToSourceBuilder pathBuilder;
 	
 	public NbpRepository(ExchangeDataProvider provider,
-			ExchangeDataParser parser, PathToSourceBuilder pathBuilder) {
+			ExchangeDataParser parser) {
 		this.provider = provider;
 		this.parser = parser;
-		this.pathBuilder = pathBuilder;
 	}
 
 	@Override
@@ -26,7 +24,7 @@ class NbpRepository implements ExchangeRateRepository {
 	@Override
 	public Optional<BigDecimal> getRateByCodeAndDate(CurrencyCode code,
 			LocalDate date) {
-		String rate = provider.getExchangeRate(pathBuilder.getPath(code, date));
+		String rate = provider.getExchangeRate(code, date);
 		return parser.getRate(rate);
 	}
 }

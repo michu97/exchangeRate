@@ -1,5 +1,9 @@
 package api;
 
+import java.time.LocalDate;
+
+import demo.CurrencyCode;
+
 interface ExchangeDataProvider {
-	String getExchangeRate(String source);
+	String getExchangeRate(CurrencyCode code, LocalDate date);
 }

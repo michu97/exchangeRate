@@ -1,32 +1,22 @@
 package api;
 
-import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import demo.CurrencyCode;
 
 class NbpDataProvider implements ExchangeDataProvider {
+	private final static String API_URL = 
+			"http://api.nbp.pl/api/exchangerates/rates/a/";
 
 	@Override
-	public String getExchangeRate(String source) {
-		return getResponse(source);
+	public String getExchangeRate(CurrencyCode code, LocalDate date) {
+		HttpRequest httpRequest = new HttpRequest();
+		return httpRequest.getResponse(generateURL(code, date));
 	}
-
-	private String getResponse(String source) {
-		OkHttpClient client = new OkHttpClient();
-		Request request = new Request.Builder()
-							.url(source)
-							.build();
-		return getBody(client, request);
-	}
-
-	private String getBody(OkHttpClient client, Request request) {
-		try {
-			Response response = client.newCall(request).execute();
-			return response.body().string();
-		} catch (IOException e) {
-			return "";
-		}
+	
+	private String generateURL(CurrencyCode code, LocalDate date) {
+		return API_URL + code.name() + "/" + 
+				date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 	}
 }

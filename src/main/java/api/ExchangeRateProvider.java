@@ -15,6 +15,7 @@ class ExchangeRateProvider {
 	
 	public Optional<BigDecimal> getRateByCodeAndDate(CurrencyCode code,
 			LocalDate date) {
+		date = IsDateAfterToday(date) ? LocalDate.now() : date;
 		Optional<BigDecimal> rate = repository.getRateByCodeAndDate(code, date);
 		if (rate.isPresent()) {
 			return rate;
@@ -25,5 +26,9 @@ class ExchangeRateProvider {
 				break;
 		}
 		return rate;
+	}
+
+	private boolean IsDateAfterToday(LocalDate date) {
+		return date.isAfter(LocalDate.now());
 	}
 }
