@@ -15,14 +15,14 @@ public class NbpApi implements Api{
 	}
 
 	@Override
-	public Optional<BigDecimal> getRateByCode(CurrencyCode code,
-			BigDecimal amount) {
-		return getRateByCodeAndDate(code, LocalDate.now(), amount);
+	public Optional<BigDecimal> getRateByCode(BigDecimal amount, 
+			CurrencyCode code) {
+		return getRateByCodeAndDate(LocalDate.now(), amount, code);
 	}
 
 	@Override
-	public Optional<BigDecimal> getRateByCodeAndDate(CurrencyCode code,
-			LocalDate date, BigDecimal amount) {
+	public Optional<BigDecimal> getRateByCodeAndDate(LocalDate date, 
+			BigDecimal amount, CurrencyCode code) {
 		Optional<BigDecimal> rate = 
 				provider.getRateByCodeAndDate(code, date);
 		if (rate.isPresent()) {

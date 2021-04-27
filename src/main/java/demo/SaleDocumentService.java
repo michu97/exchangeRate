@@ -8,8 +8,8 @@ public class SaleDocumentService {
 	public void insert() {
 		api.Api api = new api.NbpApi();
 		Optional<BigDecimal> amount = 
-				api.getRateByCodeAndDate(CurrencyCode.EUR, LocalDate.of(2020,1,15),
-						new BigDecimal("150.1256"));
+				api.getRateByCodeAndDate(LocalDate.of(2020,1,15),
+						new BigDecimal("150.1256"), CurrencyCode.EUR);
 		System.out.println(amount);
 	}
 }
