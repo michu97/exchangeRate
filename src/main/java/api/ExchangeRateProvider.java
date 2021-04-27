@@ -15,11 +15,16 @@ class ExchangeRateProvider {
 	
 	public Optional<BigDecimal> getRateByCodeAndDate(CurrencyCode code,
 			LocalDate date) {
-		date = IsDateAfterToday(date) ? LocalDate.now() : date;
+		date = isDateAfterToday(date) ? LocalDate.now() : date;
 		Optional<BigDecimal> rate = repository.getRateByCodeAndDate(code, date);
 		if (rate.isPresent()) {
 			return rate;
 		}
+		return loopingForRate(code, date, rate);
+	}
+
+	private Optional<BigDecimal> loopingForRate(CurrencyCode code,
+			LocalDate date, Optional<BigDecimal> rate) {
 		for (int i = 1; i < 10; i++) {
 			rate = repository.getRateByCodeAndDate(code, date.minusDays(i));
 			if (rate.isPresent())
@@ -28,7 +33,7 @@ class ExchangeRateProvider {
 		return rate;
 	}
 
-	private boolean IsDateAfterToday(LocalDate date) {
+	private boolean isDateAfterToday(LocalDate date) {
 		return date.isAfter(LocalDate.now());
 	}
 }
