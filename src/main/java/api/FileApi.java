@@ -7,7 +7,7 @@ import java.util.Optional;
 import demo.CurrencyCode;
 
 public class FileApi implements Api {
-	private FileConfig config = new FileConfig();
+	private FileApiConfig config = new FileApiConfig();
 	
 	@Override
 	public Optional<BigDecimal> getRateByCode(BigDecimal amount,
