@@ -7,8 +7,6 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import demo.service.ContentNotFoundException;
@@ -17,25 +15,28 @@ import demo.service.HttpRequestService;
 public class NbpResponseReciver implements ResponseReciver {
 	private static final String API_URL = 
 			"http://api.nbp.pl/api/exchangerates/rates/a/";
-	private LocalDate date;
-	private final CurrencyCode code;
-	private final HttpRequestService service;
 	private static final Logger LOGGER = 
 			Logger.getLogger(NbpResponseReciver.class.getName());
+	private final CurrencyCode code;
+	private final HttpRequestService service;
+	private final JsonRateDeserializer deserializer;
+	private LocalDate date;
 	
 	public NbpResponseReciver(LocalDate date, CurrencyCode code,
 			HttpRequestService service) {
 		this.date = date;
 		this.code = code;
 		this.service = service;
+		this.deserializer = new JsonRateDeserializer();
 	}
+	
 
 	@Override
 	public Optional<BigDecimal> getExchangeRate() {
-		return Optional.ofNullable(deserializeJson());
+		return Optional.ofNullable(getRateValue());
 	}
 	
-	private BigDecimal deserializeJson() {
+	private BigDecimal getRateValue() {
 		JSONObject response = null;
 		try {
 			response = service.getResponse(generateURL());
@@ -51,19 +52,12 @@ public class NbpResponseReciver implements ResponseReciver {
 			}
 		}
 		
-		try {
-			JSONArray rates = response.getJSONArray("rates");
-			JSONObject rate = rates.getJSONObject(rates.length() - 1);
-			return rate.getBigDecimal("mid");
-		} catch (JSONException e) {
-			LOGGER.log(Level.WARNING, "Cannot parse response to Json: ", e);
-			return null;
-		}
+		return deserializer.getRate(response);
 	}
 	
 	private JSONObject seckondCheck() {
 		try {
-			return service.getResponse(generateExcpetion());
+			return service.getResponse(generateExcpetionURL());
 		} catch (ContentNotFoundException e) {
 			return new JSONObject();
 		}
@@ -75,12 +69,11 @@ public class NbpResponseReciver implements ResponseReciver {
 			return API_URL + code.name() + "/" +
 					LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
 		}
-
 		return API_URL + code.name() + "/" + 
 					date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 	}
 	
-	private String generateExcpetion() {
+	private String generateExcpetionURL() {
 		date = date.minusDays(1);
 		return API_URL + code.name() + "/" + 
 				date.format(DateTimeFormatter.ISO_LOCAL_DATE);

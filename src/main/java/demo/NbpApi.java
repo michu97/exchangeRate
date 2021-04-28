@@ -20,7 +20,7 @@ public class NbpApi implements ExchangeApi {
 		ResponseReciver reciver = new NbpResponseReciver(date, code, service);
 		Optional<BigDecimal> rate = reciver.getExchangeRate();
 		if (rate.isEmpty()) {
-			return reciver.getExchangeRate();
+			return rate;
 		};
 		return Optional.ofNullable(rate.get().multiply(amount));
 	}

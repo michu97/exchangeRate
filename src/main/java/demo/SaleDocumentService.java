@@ -6,10 +6,10 @@ import java.util.Optional;
 
 public class SaleDocumentService {
 	public void insert() {
-		ExchangeApi api = new NbpApi();
+		api.Api api = new api.NbpApi();
 		Optional<BigDecimal> amount = 
-				api.getAmountFromPLN(LocalDate.of(2001, 4, 10), 
-						new BigDecimal(150), CurrencyCode.EUR);
+				api.getRateByCodeAndDate(LocalDate.of(2020,1,15),
+						new BigDecimal("150.1256"), CurrencyCode.EUR);
 		System.out.println(amount);
 	}
 }

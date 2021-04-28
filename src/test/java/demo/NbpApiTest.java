@@ -10,11 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class NbpApiTest {
-private NbpApi api;
+private api.Api api;
 	
 	@Before
 	public void setup() {
-		api = new NbpApi();
+		api = new api.NbpApi();
 	}
 	
 	@Test
@@ -24,7 +24,7 @@ private NbpApi api;
 		
 		//when
 		Optional<BigDecimal> actual = 
-				api.getAmountFromPLN(LocalDate.of(2001, 1, 1), new BigDecimal(10), CurrencyCode.USD);
+				api.getRateByCodeAndDate(LocalDate.of(2001, 1, 1), new BigDecimal(10), CurrencyCode.USD);
 		
 		//then
 		assertThat(actual).isEqualTo(expected);
@@ -33,8 +33,8 @@ private NbpApi api;
 	@Test
 	public void shouldReturnRateOfTodayWhenDateIsAfter() {
 		//when
-		Optional<BigDecimal> actual = api.getAmountFromPLN(LocalDate.of(2021,4,10), new BigDecimal(10), CurrencyCode.EUR);
-		Optional<BigDecimal> expected = api.getAmountFromPLN(LocalDate.of(2021,4,10),new BigDecimal(10), CurrencyCode.EUR);
+		Optional<BigDecimal> actual = api.getRateByCodeAndDate(LocalDate.now().plusDays(1), new BigDecimal(10), CurrencyCode.EUR);
+		Optional<BigDecimal> expected = api.getRateByCode(new BigDecimal(10), CurrencyCode.EUR);
 		
 		//then
 		assertThat(actual.get()).isEqualTo(expected.get());
@@ -46,7 +46,7 @@ private NbpApi api;
 		BigDecimal expected = new BigDecimal("5.3406").multiply(new BigDecimal("178.4500"));
 		
 		//when
-		Optional<BigDecimal> actual = api.getAmountFromPLN(LocalDate.of(2021, 4, 7), new BigDecimal("178.4500"), CurrencyCode.GBP);
+		Optional<BigDecimal> actual = api.getRateByCodeAndDate(LocalDate.of(2021, 4, 7), new BigDecimal("178.4500"), CurrencyCode.GBP);
 		
 		//then
 		assertThat(actual.get()).isEqualTo(expected);
@@ -58,9 +58,39 @@ private NbpApi api;
 		BigDecimal expected = new BigDecimal("5.2393").multiply(new BigDecimal(25));
 		
 		//when
-		Optional<BigDecimal> actual = api.getAmountFromPLN(LocalDate.of(2021, 4, 10), new BigDecimal(25), CurrencyCode.GBP);
+		Optional<BigDecimal> actual = api.getRateByCodeAndDate(LocalDate.of(2021, 4, 10), new BigDecimal(25), CurrencyCode.GBP);
 		
 		//then
 		assertThat(actual.get()).isEqualTo(expected);
+	}
+	
+	@Test
+	public void shouldReturnCorrectRateForSeveralCurrencyFor2021_04_15() {
+		//given
+		LocalDate date = LocalDate.of(2021, 4, 15);
+		BigDecimal ammount = new BigDecimal("350");
+		
+		BigDecimal expectedGBP = new BigDecimal("5.2376").multiply(ammount);
+		BigDecimal expectedEUR = new BigDecimal("4.5546").multiply(ammount);
+		BigDecimal expectedUSD = new BigDecimal("3.8014").multiply(ammount);
+		BigDecimal expectedCZK = new BigDecimal("0.1755").multiply(ammount);
+		BigDecimal expectedPHP = new BigDecimal("0.0785").multiply(ammount);
+		BigDecimal expectedXDR = new BigDecimal("5.4360").multiply(ammount);
+		
+		//when
+		Optional<BigDecimal> actualGBP = api.getRateByCodeAndDate(date, ammount, CurrencyCode.GBP);
+		Optional<BigDecimal> actualEUR = api.getRateByCodeAndDate(date, ammount, CurrencyCode.EUR);
+		Optional<BigDecimal> actualUSD = api.getRateByCodeAndDate(date, ammount, CurrencyCode.USD);
+		Optional<BigDecimal> actualCZK = api.getRateByCodeAndDate(date, ammount, CurrencyCode.CZK);
+		Optional<BigDecimal> actualPHP = api.getRateByCodeAndDate(date, ammount, CurrencyCode.PHP);
+		Optional<BigDecimal> actualXDR = api.getRateByCodeAndDate(date, ammount, CurrencyCode.XDR);
+		
+		//then
+		assertThat(actualGBP.get()).isEqualTo(expectedGBP);
+		assertThat(actualEUR.get()).isEqualTo(expectedEUR);
+		assertThat(actualUSD.get()).isEqualTo(expectedUSD);
+		assertThat(actualCZK.get()).isEqualTo(expectedCZK);
+		assertThat(actualPHP.get()).isEqualTo(expectedPHP);
+		assertThat(actualXDR.get()).isEqualTo(expectedXDR);
 	}
 }
