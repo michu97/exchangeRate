@@ -7,7 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-class NbpJsonParser implements ExchangeDataParser {
+class NbpJsonParser implements ExchangeRateDataParser {
 	
 	@Override
 	public Optional<BigDecimal> getRate(String rateData) {

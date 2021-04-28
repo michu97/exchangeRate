@@ -3,7 +3,7 @@ package api;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-class FileParser implements ExchangeDataParser {
+class FileParser implements ExchangeRateDataParser {
 
 	@Override
 	public Optional<BigDecimal> getRate(String rateData) {

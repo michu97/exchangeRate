@@ -3,6 +3,6 @@ package api;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-interface ExchangeDataParser {
+interface ExchangeRateDataParser {
 	Optional<BigDecimal> getRate(String rateData);
 }

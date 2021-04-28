@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import demo.CurrencyCode;
-
 public class NbpApi implements Api {
 	private final NbpApiConfig config = new NbpApiConfig();
 	private final ExchangeRateProvider provider;
@@ -15,13 +13,13 @@ public class NbpApi implements Api {
 	}
 
 	@Override
-	public Optional<BigDecimal> getRateByCode(BigDecimal amount, 
+	public Optional<BigDecimal> getAmountInPLN(BigDecimal amount, 
 			CurrencyCode code) {
-		return getRateByCodeAndDate(LocalDate.now(), amount, code);
+		return getAmountInPLN(LocalDate.now(), amount, code);
 	}
 
 	@Override
-	public Optional<BigDecimal> getRateByCodeAndDate(LocalDate date, 
+	public Optional<BigDecimal> getAmountInPLN(LocalDate date, 
 			BigDecimal amount, CurrencyCode code) {
 		Optional<BigDecimal> rate = 
 				provider.getRateByCodeAndDate(code, date);

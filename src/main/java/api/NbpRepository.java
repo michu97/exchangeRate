@@ -4,14 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import demo.CurrencyCode;
-
 class NbpRepository implements ExchangeRateRepository {
-	private final ExchangeDataProvider provider;
-	private final ExchangeDataParser parser;
+	private final ExternalExchangeRateProvider provider;
+	private final ExchangeRateDataParser parser;
 	
-	public NbpRepository(ExchangeDataProvider provider,
-			ExchangeDataParser parser) {
+	public NbpRepository(ExternalExchangeRateProvider provider,
+			ExchangeRateDataParser parser) {
 		this.provider = provider;
 		this.parser = parser;
 	}

@@ -1,15 +1,18 @@
 package demo;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Optional;
+
+import api.Api;
+import api.CurrencyCode;
+import api.NbpApi;
 
 public class SaleDocumentService {
 	public void insert() {
-		api.Api api = new api.NbpApi();
+		Api exchangeRateApi = new NbpApi();
 		Optional<BigDecimal> amount = 
-				api.getRateByCodeAndDate(LocalDate.of(2020,1,15),
-						new BigDecimal("150.1256"), CurrencyCode.EUR);
-		System.out.println(amount);
+				exchangeRateApi.getAmountInPLN(new BigDecimal("80"),
+						CurrencyCode.USD);
+		amount.ifPresent(System.out::println);
 	}
 }

@@ -1,4 +1,4 @@
-package demo.tools;
+package api;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -14,14 +14,14 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class XmlParser implements DataParser {
+class NbpXmlParser implements ExchangeRateDataParser {
 
 	@Override
-	public Optional<BigDecimal> getRate(String content) {
+	public Optional<BigDecimal> getRate(String rateData) {
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new InputSource(new StringReader(content)));
+			Document document = builder.parse(new InputSource(new StringReader(rateData)));
 			Element root = document.getDocumentElement();
 			String item = root.getChildNodes()
 					.item(3)

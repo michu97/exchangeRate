@@ -1,4 +1,4 @@
-package demo;
+package api;
 
 public enum CurrencyCode {
 	THB,

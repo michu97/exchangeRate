@@ -3,9 +3,7 @@ package api;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import demo.CurrencyCode;
-
-class NbpDataProvider implements ExchangeDataProvider {
+class NbpDataProvider implements ExternalExchangeRateProvider {
 	private final static String API_URL = 
 			"http://api.nbp.pl/api/exchangerates/rates/a/";
 	private final HttpRequest request = new HttpRequest();

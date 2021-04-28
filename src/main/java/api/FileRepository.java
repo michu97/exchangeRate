@@ -4,12 +4,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import demo.CurrencyCode;
+class FileRepository implements ExchangeRateRepository {
+	private final ExchangeRateDataParser parser;
 
-public class FileRepository implements ExchangeRateRepository {
-	private final ExchangeDataParser parser;
-
-	public FileRepository(ExchangeDataParser parser) {
+	public FileRepository(ExchangeRateDataParser parser) {
 		this.parser = parser;
 	}
 

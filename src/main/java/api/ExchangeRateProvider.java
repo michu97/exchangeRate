@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import demo.CurrencyCode;
-
 class ExchangeRateProvider {
 	private final ExchangeRateRepository repository;
 
@@ -20,10 +18,10 @@ class ExchangeRateProvider {
 		if (rate.isPresent()) {
 			return rate;
 		}
-		return loopingForRate(code, date, rate);
+		return lookForExistingRate(code, date, rate);
 	}
 
-	private Optional<BigDecimal> loopingForRate(CurrencyCode code,
+	private Optional<BigDecimal> lookForExistingRate(CurrencyCode code,
 			LocalDate date, Optional<BigDecimal> rate) {
 		for (int i = 1; i < 10; i++) {
 			rate = repository.getRateByCodeAndDate(code, date.minusDays(i));

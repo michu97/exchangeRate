@@ -17,15 +17,20 @@ class HttpRequest {
 		Request request = new Request.Builder()
 				.url(source)
 				.build();
-		return getResponseBody(client, request);
+		return getBody(client, request);
 	}
 
-	private String getResponseBody(OkHttpClient client, Request request) {
+	private String getBody(OkHttpClient client, Request request) {
+		Response response = null;
 		try {
-			Response response = client.newCall(request).execute();
+			response = client.newCall(request).execute();
 			return response.body().string();
 		} catch (IOException e) {
 			return "";
+		} finally {
+			if (response != null) {
+				response.body().close();
+			}
 		}
 	}
 }
