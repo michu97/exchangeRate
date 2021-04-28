@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import demo.CurrencyCode;
 
-public class NbpApi implements Api{
+public class NbpApi implements Api {
 	private final NbpApiConfig config = new NbpApiConfig();
 	private final ExchangeRateProvider provider;
 	
