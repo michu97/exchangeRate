@@ -23,7 +23,7 @@ class ExchangeRateProvider {
 
 	private Optional<BigDecimal> lookForExistingRate(CurrencyCode code,
 			LocalDate date, Optional<BigDecimal> rate) {
-		for (int i = 1; i < 10; i++) {
+		for (int i = 1; i < 11; i++) {
 			rate = repository.getRateByCodeAndDate(code, date.minusDays(i));
 			if (rate.isPresent())
 				break;

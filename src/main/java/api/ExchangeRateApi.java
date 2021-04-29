@@ -4,12 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class NbpApi implements Api {
-	private final NbpApiConfig config = new NbpApiConfig();
-	private final ExchangeRateProvider provider;
+public class ExchangeRateApi implements Api {
+	private Strategy strategy;
 	
-	public NbpApi() { 
-		provider = config.getExchangeProvider();
+	public ExchangeRateApi(Strategy strategy) { 
+		this.strategy = strategy;
 	}
 
 	@Override
@@ -22,10 +21,16 @@ public class NbpApi implements Api {
 	public Optional<BigDecimal> getAmountInPLN(LocalDate date, 
 			BigDecimal amount, CurrencyCode code) {
 		Optional<BigDecimal> rate = 
-				provider.getRateByCodeAndDate(code, date);
+				strategy.getExchangeRate(code, date);
 		if (rate.isPresent()) {
 			return Optional.of(rate.get().multiply(amount));
 		}
 		return rate;
 	}
+	
+	@Override
+	public void setStrategy(Strategy strategy) {
+		this.strategy = strategy;
+	}
+
 }

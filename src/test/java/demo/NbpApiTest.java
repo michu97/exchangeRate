@@ -16,11 +16,11 @@ private api.Api api;
 	
 	@Before
 	public void setup() {
-		api = new api.NbpApi();
+		api = new api.ExchangeRateApi();
 	}
 	
 	@Test
-	public void shouldReturnRateOfEmptyOptionalWhenDateIsBefore2002_01_02() {
+	public void Should_Return_Empty_Optional_When_Date_Is_Before_2002_01_02() {
 		//given
 		Optional<BigDecimal> expected = Optional.empty();
 		
@@ -33,7 +33,7 @@ private api.Api api;
 	}
 	
 	@Test
-	public void shouldReturnRateOfTodayWhenDateIsAfter() {
+	public void Should_Return_Rate_Of_Today_When_Date_Is_After() {
 		//when
 		Optional<BigDecimal> actual = api.getAmountInPLN(LocalDate.now().plusDays(1), new BigDecimal(10), CurrencyCode.EUR);
 		Optional<BigDecimal> expected = api.getAmountInPLN(new BigDecimal(10), CurrencyCode.EUR);
@@ -43,7 +43,7 @@ private api.Api api;
 	}
 	
 	@Test
-	public void shouldReturnCorrectConversion() {
+	public void Should_Return_Conversion() {
 		//given
 		BigDecimal expected = new BigDecimal("5.3406").multiply(new BigDecimal("178.4500"));
 		
@@ -55,7 +55,7 @@ private api.Api api;
 	}
 	
 	@Test
-	public void shouldReturnRateBeforeWeekend() {
+	public void Should_Return_Rate_Before_Weekend() {
 		//given
 		BigDecimal expected = new BigDecimal("5.2393").multiply(new BigDecimal(25));
 		
@@ -67,7 +67,7 @@ private api.Api api;
 	}
 	
 	@Test
-	public void shouldReturnCorrectRateForSeveralCurrencyFor2021_04_15() {
+	public void Should_Return_Rate_For_Several_Currency_For_2021_04_15() {
 		//given
 		LocalDate date = LocalDate.of(2021, 4, 15);
 		BigDecimal ammount = new BigDecimal("350");

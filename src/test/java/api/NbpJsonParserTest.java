@@ -16,34 +16,45 @@ public class NbpJsonParserTest {
 	}
 
 	@Test
-	public void testGetRate() throws Exception {
-		ExchangeRateDataParser testSubject = jsonParser;
-		Optional<BigDecimal> result;
-		String rateData = "{}";
-		result = testSubject.getRate(rateData);
-		assertThat(result).isEqualTo(Optional.empty());
+	public void Should_Return_Empty_Optional_For_Empty_Json() {
+		//given
+		String emptyJson = "{}";
+		Optional<BigDecimal> actual;
+		Optional<BigDecimal> expected = Optional.empty();
+		
+		//when
+		actual = jsonParser.getRate(emptyJson);
+		
+		//then
+		assertThat(actual).isEqualTo(expected);
 	}
 	
 	@Test
-	public void shouldReturnRateFromJson() {
-		ExchangeRateDataParser testSubject;
-		String rateData2 = "{\r\n"
-				+ "  \"table\": \"A\",\r\n"
-				+ "  \"currency\": \"dolar amerykañski\",\r\n"
-				+ "  \"code\": \"USD\",\r\n"
-				+ "  \"rates\": [\r\n"
-				+ "    {\r\n"
-				+ "      \"no\": \"080/A/NBP/2021\",\r\n"
-				+ "      \"effectiveDate\": \"2021-04-27\",\r\n"
-				+ "      \"mid\": 3.7826\r\n"
-				+ "    }\r\n"
-				+ "  ]\r\n"
-				+ "}";
-		Optional<BigDecimal> result2;
-		testSubject = jsonParser;
-		result2 = testSubject.getRate(rateData2);
-		assertThat(result2).isEqualTo(Optional.of(new BigDecimal("3.7826")));
+	public void Should_Return_Rate_From_NBP_Json_Format() {
+		//given
+		String nbpResponse = "{\"table\":\"A\",\"currency\":\"dolar amerykañski\",\"code\":\"USD\",\"rates\":[{\"no\":\"080/A/NBP/2021\",\"effectiveDate\":\"2021-04-27\",\"mid\":3.7826}]}";
+		BigDecimal expected = new BigDecimal("3.7826");
+		Optional<BigDecimal> actual;
+		
+		//when
+		actual = jsonParser.getRate(nbpResponse);
+		
+		//then
+		assertThat(actual).hasValue(expected);
 	}
 	
+	@Test
+	public void Should_Return_Empty_Optional_For_Data_Not_Found() {
+		//given
+		String nbpResponse = "404 NotFound - Not Found - Brak danych";
+		Optional<BigDecimal> expected = Optional.empty();
+		Optional<BigDecimal> actual;
+		
+		//when
+		actual = jsonParser.getRate(nbpResponse);
+		
+		//then
+		assertThat(actual).isEqualTo(expected);
+	}
 	
 }
