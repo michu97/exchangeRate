@@ -15,7 +15,8 @@ public class SaleDocumentService {
 	public void insert() {
 		Strategy nbpStrategy = new NbpStrategy();
 		Api exchangeRateApi = new ExchangeRateApi(nbpStrategy);
-		exchangeRateApi.getAmountInPLN(new BigDecimal("150"), CurrencyCode.USD);
+		Optional<BigDecimal> rate = exchangeRateApi.getAmountInPLN(new BigDecimal("150"), CurrencyCode.USD);
+		System.out.println(rate);
 		
 		Strategy jsonFileStrategy = new JsonFileStrategy(null);
 		exchangeRateApi.setStrategy(jsonFileStrategy);

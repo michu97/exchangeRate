@@ -20,8 +20,7 @@ public class ExchangeRateApi implements Api {
 	@Override
 	public Optional<BigDecimal> getAmountInPLN(LocalDate date, 
 			BigDecimal amount, CurrencyCode code) {
-		Optional<BigDecimal> rate = 
-				strategy.getExchangeRate(code, date);
+		Optional<BigDecimal> rate = ValidateExchangeRate.validate(strategy, code, date);
 		if (rate.isPresent()) {
 			return Optional.of(rate.get().multiply(amount));
 		}
