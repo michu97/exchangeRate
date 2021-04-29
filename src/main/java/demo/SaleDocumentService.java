@@ -1,6 +1,10 @@
 package demo;
 
+import java.math.BigDecimal;import java.time.LocalDate;
+import java.util.Optional;
+
 import api.Api;
+import api.CurrencyCode;
 import api.ExchangeRateApi;
 import api.JsonFileStrategy;
 import api.NbpStrategy;
@@ -11,9 +15,11 @@ public class SaleDocumentService {
 	public void insert() {
 		Strategy nbpStrategy = new NbpStrategy();
 		Api exchangeRateApi = new ExchangeRateApi(nbpStrategy);
+		exchangeRateApi.getAmountInPLN(new BigDecimal("150"), CurrencyCode.USD);
 		
 		Strategy jsonFileStrategy = new JsonFileStrategy(null);
 		exchangeRateApi.setStrategy(jsonFileStrategy);
+		exchangeRateApi.getAmountInPLN(new BigDecimal("150"), CurrencyCode.USD);
 		
 		XmlFileStartegy xmlFileStartegy = new XmlFileStartegy(null);
 		exchangeRateApi.setStrategy(xmlFileStartegy);

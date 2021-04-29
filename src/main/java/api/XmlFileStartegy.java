@@ -14,15 +14,13 @@ public class XmlFileStartegy implements Strategy {
 
 	@Override
 	public Optional<BigDecimal> getExchangeRate(CurrencyCode code) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	@Override
 	public Optional<BigDecimal> getExchangeRate(CurrencyCode code,
 			LocalDate date) {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 }
