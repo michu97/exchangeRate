@@ -8,5 +8,4 @@ public interface Api {
 	Optional<BigDecimal> getAmountInPLN(BigDecimal amount, CurrencyCode code);
 	Optional<BigDecimal> getAmountInPLN(LocalDate date, BigDecimal amount,
 			CurrencyCode code);
-	void setStrategy(Strategy strategy);
 }

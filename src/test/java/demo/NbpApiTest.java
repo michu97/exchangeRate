@@ -10,13 +10,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import api.CurrencyCode;
+import api.NbpStrategy;
 
 public class NbpApiTest {
 private api.Api api;
 	
 	@Before
 	public void setup() {
-		api = new api.ExchangeRateApi();
+		api = new api.ExchangeRateApi(new NbpStrategy());
 	}
 	
 	@Test

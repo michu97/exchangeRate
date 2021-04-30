@@ -26,10 +26,4 @@ public class ExchangeRateApi implements Api {
 		}
 		return rate;
 	}
-	
-	@Override
-	public void setStrategy(Strategy strategy) {
-		this.strategy = strategy;
-	}
-
 }

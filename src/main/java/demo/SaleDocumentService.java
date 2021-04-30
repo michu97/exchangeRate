@@ -16,13 +16,13 @@ public class SaleDocumentService {
 		Strategy nbpStrategy = new NbpStrategy();
 		Api exchangeRateApi = new ExchangeRateApi(nbpStrategy);
 		Optional<BigDecimal> rate = exchangeRateApi.getAmountInPLN(new BigDecimal("150"), CurrencyCode.USD);
-		System.out.println(rate);
 		
 		Strategy jsonFileStrategy = new JsonFileStrategy(null);
-		exchangeRateApi.setStrategy(jsonFileStrategy);
-		exchangeRateApi.getAmountInPLN(new BigDecimal("150"), CurrencyCode.USD);
+		ExchangeRateApi jsonApi = new ExchangeRateApi(jsonFileStrategy);
+		jsonApi.getAmountInPLN(null, null);
 		
 		XmlFileStartegy xmlFileStartegy = new XmlFileStartegy(null);
-		exchangeRateApi.setStrategy(xmlFileStartegy);
+		ExchangeRateApi xmlApi = new ExchangeRateApi(xmlFileStartegy);
+		xmlApi.getAmountInPLN(null, null);
 	}
 }
