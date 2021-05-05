@@ -12,7 +12,7 @@ public class FileApi extends Api {
 	}
 	
 	public FileApi() {
-		super();
+		super(null);
 	}
 
 	@Override

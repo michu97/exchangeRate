@@ -17,8 +17,7 @@ public abstract class Api {
 		this.nextApi = null;
 	}
 
-	private Optional<BigDecimal> getRate(LocalDate date, CurrencyCode code) {
-		date = validateDate(date);
+	final Optional<BigDecimal> getRate(LocalDate date, CurrencyCode code) {
 		String rawData = getRawData(date, code);
 		Optional<Rate> rate = parseData(rawData);
 
@@ -27,39 +26,17 @@ public abstract class Api {
 		}
 
 		if (nextApi != null) {
-			return getRateFromNextApi(date, code);
+			Optional<BigDecimal> fromNextApi = nextApi.getRate(date, code);
+			fromNextApi.ifPresent(x -> save(new Rate(x, date, code)));
+			return fromNextApi;
 		}
 
 		return Optional.empty();
-	}
-
-	protected Optional<BigDecimal> getRateFromNextApi(LocalDate date,
-			CurrencyCode code) {
-		return nextApi.getRate(date, code);
-	}
-
-	
-	public Optional<BigDecimal> getAmountInPLN(LocalDate date, CurrencyCode code,
-			BigDecimal amount) {
-		for (int i = 0; i <= 10; i++) {
-			Optional<BigDecimal> rate = getRate(date.minusDays(i), code);
-			if (rate.isPresent()) {
-				return Optional.of(rate.get().multiply(amount));
-			}
-		}
-		return Optional.empty();
-	}
-
-	
-	public Optional<BigDecimal> getAmountInPLN(CurrencyCode code,
-			BigDecimal amount) {
-		return getAmountInPLN(LocalDate.now(), code, amount);
 	}
 
 	abstract String getRawData(LocalDate date, CurrencyCode code);
 	abstract Optional<Rate> parseData(String rawData);
 	
-	private LocalDate validateDate(LocalDate date) {
-		return date.isBefore(LocalDate.now()) ? date : LocalDate.now();
+	void save(Rate rate) {
 	}
 }

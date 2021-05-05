@@ -1,6 +1,5 @@
 package test;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -19,16 +18,11 @@ public class Cache extends Api {
 		super(nextApi);
 		this.rates = new HashMap<>();
 	}
-
+	
 	@Override
-	protected Optional<BigDecimal> getRateFromNextApi(LocalDate date,
-			CurrencyCode code) {
-		Optional<BigDecimal> rateFromNextApi = super.getRateFromNextApi(date, code);
-		if (rateFromNextApi.isPresent()) {
-			save(new Rate(rateFromNextApi.get(), date, code));
-			return rateFromNextApi;
-		}
-		return rateFromNextApi;
+	void save(Rate rate) {
+		String key = getKey(rate.getDate(), rate.getCode());
+		rates.put(key, rate);
 	}
 	
 	@Override
@@ -54,8 +48,4 @@ public class Cache extends Api {
 		return date.format(DateTimeFormatter.ISO_LOCAL_DATE) + code.name();
 	}
 	
-	private void save(Rate rate) {
-		String key = getKey(rate.getDate(), rate.getCode());
-		rates.put(key, rate);
-	}
 }
