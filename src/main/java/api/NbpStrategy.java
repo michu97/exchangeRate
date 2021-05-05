@@ -6,11 +6,11 @@ import java.util.Optional;
 
 public class NbpStrategy implements Strategy {
 	NbpApiConfig config = new NbpApiConfig();
-	private final ExchangeRateProvider provider;
+	private final ExchangeRateRepository repository;
 	
 	
 	public NbpStrategy() {
-		provider = config.getExchangeProvider();
+		repository = config.getRepository();
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class NbpStrategy implements Strategy {
 	@Override
 	public Optional<BigDecimal> getExchangeRate(CurrencyCode code,
 			LocalDate date) {
-		return provider.getRateByCodeAndDate(code, date);
+		return repository.getRateByCodeAndDate(code, date);
 	}
 	
 }

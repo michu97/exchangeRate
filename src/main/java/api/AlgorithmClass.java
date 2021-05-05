@@ -7,8 +7,7 @@ import java.util.Optional;
 public class AlgorithmClass {
 	private static int DAYS_COUNT = 11;
 	
-	static Optional<BigDecimal> validate(Strategy strategy, CurrencyCode code, LocalDate date) {
-		date = date.isBefore(LocalDate.now()) ? date : LocalDate.now();
+	public static Optional<BigDecimal> validate(Strategy strategy, CurrencyCode code, LocalDate date) {
 		Optional<BigDecimal> rate = strategy.getExchangeRate(code, date);
 		if (rate.isPresent()) {
 			return rate;

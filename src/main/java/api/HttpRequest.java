@@ -6,7 +6,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-class HttpRequest {
+public class HttpRequest {
 	
 	public String getResponse(String source) {
 		return getBody(source);

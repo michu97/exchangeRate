@@ -21,7 +21,7 @@ public class SaleDocumentService {
 		ExchangeRateApi jsonApi = new ExchangeRateApi(jsonFileStrategy);
 		jsonApi.getAmountInPLN(null, null);
 		
-		XmlFileStartegy xmlFileStartegy = new XmlFileStartegy(null);
+		Strategy xmlFileStartegy = new XmlFileStartegy(null);
 		ExchangeRateApi xmlApi = new ExchangeRateApi(xmlFileStartegy);
 		xmlApi.getAmountInPLN(null, null);
 	}
