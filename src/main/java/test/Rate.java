@@ -14,7 +14,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import api.CurrencyCode;
 
 public class Rate {
-	private final BigDecimal rate;
+	private final BigDecimal value;
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")  
@@ -22,17 +22,18 @@ public class Rate {
 	private final CurrencyCode code;
 
 	
-	public Rate(@JsonProperty("rate") BigDecimal rate,
+	public Rate(
+			@JsonProperty("rate") BigDecimal rate,
 			@JsonProperty("date") LocalDate date,
 			@JsonProperty("code") CurrencyCode code) {
-		this.rate = rate;
+		this.value = rate;
 		this.date = date;
 		this.code = code;
 	}
 	
 	@JsonGetter("rate")
-	public BigDecimal getRate() {
-		return rate;
+	public BigDecimal getValue() {
+		return value;
 	}
 
 	@JsonGetter("date")
@@ -47,7 +48,7 @@ public class Rate {
 
 	@Override
 	public String toString() {
-		return "{\"rate\":\"" + rate + "\", \"date\":\"" + date
+		return "{\"rate\":\"" + value + "\", \"date\":\"" + date
 				+ "\", \"code\":\"" + code + "\"}";
 	}
 }

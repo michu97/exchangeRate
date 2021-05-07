@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import test.nbp.NbpTable;
 
-public class NbpParser implements RateParser {
+public class NbpJsonParser implements RateParser {
 
 	@Override
 	public Optional<Rate> parseToDomain(String rawData) {

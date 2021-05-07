@@ -22,16 +22,21 @@ public abstract class Api {
 		Optional<Rate> rate = parseData(rawData);
 
 		if (rate.isPresent()) {
-			return Optional.of(rate.get().getRate());
+			return rate.map(Rate::getValue);
 		}
-
+		
 		if (nextApi != null) {
-			Optional<BigDecimal> fromNextApi = nextApi.getRate(date, code);
-			fromNextApi.ifPresent(x -> save(new Rate(x, date, code)));
-			return fromNextApi;
+			return checkNextApi(date, code);
 		}
 
 		return Optional.empty();
+	}
+
+	final private Optional<BigDecimal> checkNextApi(LocalDate date,
+			CurrencyCode code) {
+		Optional<BigDecimal> fromNextApi = nextApi.getRate(date, code);
+		fromNextApi.ifPresent(x -> save(new Rate(x, date, code)));
+		return fromNextApi;
 	}
 
 	abstract String getRawData(LocalDate date, CurrencyCode code);

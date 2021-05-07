@@ -20,9 +20,7 @@ public class NbpApi extends Api {
 	}
 	
 	public NbpApi(RateParser parser) {
-		super(null);
-		this.request = new HttpRequest();
-		this.parser = parser;
+		this(null, parser);
 	}
 
 	@Override

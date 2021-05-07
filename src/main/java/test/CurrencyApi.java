@@ -5,14 +5,14 @@ import java.util.Optional;
 
 import api.CurrencyCode;
 
-public class WalutyApi extends Api{
+public class CurrencyApi extends Api{
 
-	public WalutyApi(Api nextApi) {
+	public CurrencyApi(Api nextApi) {
 		super(nextApi);
 	}
 	
-	public WalutyApi() {
-		super();
+	public CurrencyApi() {
+		this(null);
 	}
 
 	@Override
