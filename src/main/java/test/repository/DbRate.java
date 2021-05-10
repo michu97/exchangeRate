@@ -21,7 +21,7 @@ public class DbRate {
 	private Long id;
 	private LocalDate date;
 	private String currencyCode;
-	@Column(precision = 19, scale = 5)
+	@Column(precision = 19, scale = 4)
 	private BigDecimal rate;
 	
 	public DbRate() {
