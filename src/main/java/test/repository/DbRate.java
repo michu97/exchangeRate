@@ -74,7 +74,10 @@ public class DbRate {
 	}
 	
 	public Rate toDomain() {
-		return new Rate(rate, date, CurrencyCode.valueOf(currencyCode));
+		return new Rate(
+				rate,
+				date,
+				CurrencyCode.valueOf(currencyCode));
 	}
 	
 	public static DbRate fromDomain(Rate rate) {

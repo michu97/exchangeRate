@@ -3,11 +3,14 @@ package test;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import org.hibernate.cfg.Configuration;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import api.CurrencyCode;
 import test.repository.ExchangeRateRepository;
+import test.repository.ExchangeRateRepositoryDb;
 
 public class SqlApi extends Api {
 	private final ExchangeRateRepository repository;
@@ -19,6 +22,14 @@ public class SqlApi extends Api {
 	public SqlApi(Api nextApi, ExchangeRateRepository repository) {
 		super(nextApi);
 		this.repository = repository;
+	}
+	
+	public SqlApi(Api nextApi) {
+		super(nextApi);
+		this.repository = new ExchangeRateRepositoryDb(
+				new Configuration()
+				.configure()
+				.buildSessionFactory());
 	}
 
 	@Override
