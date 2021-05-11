@@ -25,11 +25,17 @@ public class SqlApi extends Api {
 	}
 	
 	public SqlApi(Api nextApi) {
-		super(nextApi);
-		this.repository = new ExchangeRateRepositoryDb(
+		this(nextApi, new ExchangeRateRepositoryDb(
 				new Configuration()
 				.configure()
-				.buildSessionFactory());
+				.buildSessionFactory()));
+	}
+	
+	public SqlApi() {
+		this(null, new ExchangeRateRepositoryDb(
+				new Configuration()
+				.configure()
+				.buildSessionFactory()));
 	}
 
 	@Override
