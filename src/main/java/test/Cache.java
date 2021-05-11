@@ -26,7 +26,7 @@ public class Cache extends Api {
 	}
 	
 	@Override
-	String getRawData(LocalDate date, CurrencyCode code) {
+	public String getRawData(LocalDate date, CurrencyCode code) {
 		Rate rate = rates.get(getKey(date, code));
 		if (rate != null) {
 			return rate.toString();
@@ -35,7 +35,7 @@ public class Cache extends Api {
 	}
 
 	@Override
-	Optional<Rate> parseData(String rawData) {
+	public Optional<Rate> parseData(String rawData) {
 		try {
 			Rate rate = new ObjectMapper().readValue(rawData, Rate.class);
 			return Optional.of(rate);

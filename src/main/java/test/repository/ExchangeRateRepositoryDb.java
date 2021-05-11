@@ -1,6 +1,7 @@
 package test.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.TypedQuery;
@@ -9,9 +10,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import api.CurrencyCode;
 import test.Rate;
+import test.entity.Country;
+import test.entity.CountryCode;
+import test.entity.ExhcangeRate;
 
 public class ExchangeRateRepositoryDb implements ExchangeRateRepository {
 
@@ -38,7 +43,6 @@ public class ExchangeRateRepositoryDb implements ExchangeRateRepository {
 			if (tx != null) {
 				tx.rollback();
 			}
-			e.printStackTrace();
 			return Optional.empty();
 		} finally {
 			session.close();
@@ -57,7 +61,46 @@ public class ExchangeRateRepositoryDb implements ExchangeRateRepository {
 			if (tx != null) {
 				tx.rollback();
 			}
-			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public void save(Country country) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.save(country);
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public void saveNewRate(Rate rate) {
+		Session session = sessionFactory.openSession();
+		String hqlCode = "FROM CountryCode c WHERE c.code = :code";
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			Query<CountryCode> query = session.createQuery(hqlCode);
+			query.setParameter("code", rate.getCode().name());
+			CountryCode code = query.getSingleResult();
+			
+			ExhcangeRate result = new ExhcangeRate(rate.getDate(), rate.getValue(), code);
+			session.save(result);
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null) {
+				tx.rollback();
+			}
 		} finally {
 			session.close();
 		}

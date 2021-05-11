@@ -24,14 +24,14 @@ public class NbpApi extends Api {
 	}
 
 	@Override
-	String getRawData(LocalDate date, CurrencyCode code) {
+	public String getRawData(LocalDate date, CurrencyCode code) {
 		String url = API_URL + code.name() + "/" +
 				date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		return request.getResponse(url);
 	}
 
 	@Override
-	Optional<Rate> parseData(String rawData) {
+	public Optional<Rate> parseData(String rawData) {
 		return parser.parseToDomain(rawData);
 	}
 }

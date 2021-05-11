@@ -12,14 +12,18 @@ import api.CurrencyCode;
 public class SqlApiTest {
 
 	@Test
-	public void test() {
+	public void Should_Get_Data_From_Database() {
+		//given
 		SqlApi api = new SqlApi();
-		
 		api.save(new Rate(new BigDecimal("3.2567"), LocalDate.of(2021, 5, 7), CurrencyCode.EUR));
 		
+		//when
 		Optional<BigDecimal> rate = api.getRate(LocalDate.of(2021, 5, 7), CurrencyCode.EUR);
 		
+		//then
 		assertThat(rate.get()).isEqualTo(new BigDecimal("3.2567"));
 	}
+	
+	
 
 }

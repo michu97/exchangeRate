@@ -16,12 +16,12 @@ public class FileApi extends Api {
 	}
 
 	@Override
-	String getRawData(LocalDate date, CurrencyCode code) {
+	public String getRawData(LocalDate date, CurrencyCode code) {
 		return "";
 	}
 
 	@Override
-	Optional<Rate> parseData(String rawData) {
+	public Optional<Rate> parseData(String rawData) {
 		System.out.println("File Api here");
 		return Optional.empty();
 	}

@@ -16,12 +16,12 @@ public class CurrencyApi extends Api{
 	}
 
 	@Override
-	String getRawData(LocalDate date, CurrencyCode code) {
+	public String getRawData(LocalDate date, CurrencyCode code) {
 		return "";
 	}
 
 	@Override
-	Optional<Rate> parseData(String rawData) {
+	public Optional<Rate> parseData(String rawData) {
 		System.out.println("waluty here");
 		return Optional.empty();
 	}

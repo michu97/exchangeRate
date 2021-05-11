@@ -18,6 +18,9 @@
         <property name="hibernate.hbm2ddl.auto">update</property> 
         
         <mapping class="test.repository.DbRate"/>
+		<mapping class="test.entity.Country" />
+		<mapping class="test.entity.CountryCode" />
+		<mapping class="test.entity.ExhcangeRate" />
 		
 	</session-factory>
 </hibernate-configuration>

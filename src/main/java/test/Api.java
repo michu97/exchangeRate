@@ -17,7 +17,7 @@ public abstract class Api {
 		this.nextApi = null;
 	}
 
-	final Optional<BigDecimal> getRate(LocalDate date, CurrencyCode code) {
+	public final Optional<BigDecimal> getRate(LocalDate date, CurrencyCode code) {
 		String rawData = getRawData(date, code);
 		Optional<Rate> rate = parseData(rawData);
 
@@ -39,8 +39,8 @@ public abstract class Api {
 		return fromNextApi;
 	}
 
-	abstract String getRawData(LocalDate date, CurrencyCode code);
-	abstract Optional<Rate> parseData(String rawData);
+	public abstract String getRawData(LocalDate date, CurrencyCode code);
+	public abstract Optional<Rate> parseData(String rawData);
 	
 	void save(Rate rate) {
 	}
