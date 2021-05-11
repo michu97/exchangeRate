@@ -51,7 +51,7 @@ public class ApiTest {
 		cache.getRate(requestDate, requestCode);
 		cache.getRate(requestDate, requestCode);
 		cache.getRate(requestDate, requestCode);
-		
+		 
 		//then
 		verify(nbpApi, times(1)).getRawData(requestDate, requestCode);
 	}
