@@ -10,11 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import test.Rate;
 
 @Entity
-public class ExhcangeRate {
+@Table(name = "ExchangeRate")
+public class ExchangeRateDb {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,13 +28,13 @@ public class ExhcangeRate {
 	
 	@ManyToOne
 	@JoinColumn(name = "countryCode_id", nullable = false)
-	private CountryCode code;
+	private CurrencyCodeDb code;
 	
-	public ExhcangeRate() {
+	public ExchangeRateDb() {
 	}
 
-	public ExhcangeRate(LocalDate date, BigDecimal rate,
-			CountryCode code) {
+	public ExchangeRateDb(LocalDate date, BigDecimal rate,
+			CurrencyCodeDb code) {
 		this.date = date;
 		this.rate = rate;
 		this.code = code;
@@ -62,11 +64,11 @@ public class ExhcangeRate {
 		this.rate = rate;
 	}
 
-	public CountryCode getCode() {
+	public CurrencyCodeDb getCode() {
 		return code;
 	}
 
-	public void setCode(CountryCode code) {
+	public void setCode(CurrencyCodeDb code) {
 		this.code = code;
 	}
 	

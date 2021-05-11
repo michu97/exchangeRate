@@ -23,15 +23,12 @@ public class Country {
 	@Column(unique = true)
 	private String name;
 	
-	@ManyToMany(cascade = {
-	        CascadeType.PERSIST,
-	        CascadeType.MERGE
-	    })
+	@ManyToMany
 	@JoinTable(
 			name = "Contry_codes",
 			joinColumns = @JoinColumn(name = "country_id"),
 			inverseJoinColumns = @JoinColumn(name = "countryCode_id"))
-	private List<CountryCode> codes = new ArrayList<>();
+	private List<CurrencyCodeDb> codes = new ArrayList<>();
 
 	public Country(String name) {
 		this.name = name;
@@ -56,15 +53,15 @@ public class Country {
 		this.name = name;
 	}
 
-	public List<CountryCode> getCodes() {
+	public List<CurrencyCodeDb> getCodes() {
 		return codes;
 	}
 
-	public void setCodes(List<CountryCode> codes) {
+	public void setCodes(List<CurrencyCodeDb> codes) {
 		this.codes = codes;
 	}
 	
-	public void addCode(CountryCode code) {
+	public void addCode(CurrencyCodeDb code) {
 		System.out.println(code);
 		codes.add(code);
 		code.getCountries().add(this);

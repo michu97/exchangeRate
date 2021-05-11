@@ -19,8 +19,8 @@
         
         <mapping class="test.repository.DbRate"/>
 		<mapping class="test.entity.Country" />
-		<mapping class="test.entity.CountryCode" />
-		<mapping class="test.entity.ExhcangeRate" />
+		<mapping class="test.entity.CurrencyCodeDb" />
+		<mapping class="test.entity.ExchangeRateDb" />
 		
 	</session-factory>
 </hibernate-configuration>

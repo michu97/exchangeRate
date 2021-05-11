@@ -15,8 +15,8 @@ import org.hibernate.query.Query;
 import api.CurrencyCode;
 import test.Rate;
 import test.entity.Country;
-import test.entity.CountryCode;
-import test.entity.ExhcangeRate;
+import test.entity.CurrencyCodeDb;
+import test.entity.ExchangeRateDb;
 
 public class ExchangeRateRepositoryDb implements ExchangeRateRepository {
 
@@ -86,15 +86,15 @@ public class ExchangeRateRepositoryDb implements ExchangeRateRepository {
 	@Override
 	public void saveNewRate(Rate rate) {
 		Session session = sessionFactory.openSession();
-		String hqlCode = "FROM CountryCode c WHERE c.code = :code";
+		String hqlCode = "FROM CurrencyCodeDb c WHERE c.code = :code";
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			Query<CountryCode> query = session.createQuery(hqlCode);
+			Query<CurrencyCodeDb> query = session.createQuery(hqlCode);
 			query.setParameter("code", rate.getCode().name());
-			CountryCode code = query.getSingleResult();
+			CurrencyCodeDb code = query.getSingleResult();
 			
-			ExhcangeRate result = new ExhcangeRate(rate.getDate(), rate.getValue(), code);
+			ExchangeRateDb result = new ExchangeRateDb(rate.getDate(), rate.getValue(), code);
 			session.save(result);
 			tx.commit();
 		} catch (HibernateException e) {
