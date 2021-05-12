@@ -56,7 +56,7 @@ public class SqlApi extends Api {
 	
 	@Override
 	void save(Rate rate) {
-		repository.saveRate(rate);
+		repository.saveNewRate(rate);
 	}
 
 }

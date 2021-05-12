@@ -26,5 +26,9 @@ public class SaleDocumentService {
 				CurrencyCode.USD,
 				new BigDecimal("120"));
 		pln2.ifPresent(System.out::println);
+		
+		for (int i = 0; i < 20; i++) {
+			currencyExchanger.getAmountInPLN(LocalDate.now().minusDays(i), CurrencyCode.USD, new BigDecimal("150"));
+		}
 	}
 }
